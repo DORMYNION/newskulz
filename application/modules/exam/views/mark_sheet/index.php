@@ -115,13 +115,15 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th><?php echo $this->lang->line('sl_no'); ?></th>
+                            <th><?php echo $this->lang->line('sn'); ?></th>
                             <th><?php echo $this->lang->line('subject'); ?></th>
-                            <th><?php echo $this->lang->line('exam_mark'); ?></th>                                            
+                            <th><?php echo $this->lang->line('ca'); ?></th>                                            
                             <th><?php echo $this->lang->line('mark_obtain'); ?></th>                                            
-                            <th><?php echo $this->lang->line('exam_grade'); ?></th>                                            
-                            <th><?php echo $this->lang->line('grade_point'); ?></th>                                            
-                            <th><?php echo $this->lang->line('remark'); ?></th>                                            
+                            <th><?php echo $this->lang->line('total'); ?></th>                                            
+                            <th><?php echo $this->lang->line('grade_avg'); ?></th>                                            
+                            <th><?php echo $this->lang->line('position'); ?></th>                                            
+                            <th><?php echo $this->lang->line('cambridge_grade'); ?></th>                                               
+                            <th><?php echo $this->lang->line('effort_grade'); ?></th>                                            
                         </tr>
                     </thead>
                     <tbody id="fn_mark">   
@@ -133,11 +135,14 @@
                                 <tr>
                                     <td><?php echo $count++;  ?></td>
                                     <td><?php echo ucfirst($obj->subject); ?></td>
-                                    <td><?php echo $obj->exam_mark; ?></td>
+                                    <td><?php echo $obj->ca; ?></td>
                                     <td><?php echo $obj->obtain_mark; ?></td>
+                                    <td><?php echo $obj->total_score; ?></td>
+                                    <td><?php echo $obj->grade_avg; ?></td>
+                                    <td><?php echo $obj->position; ?></td>
                                     <td><?php echo $obj->name; ?></td>
                                     <td><?php echo $obj->point; ?></td>                               
-                                    <td><?php echo $obj->remark; ?></td>                               
+                                    <td><?php echo $obj->effort_grade; ?></td>                               
                                 </tr>
                             <?php } ?>
                         <?php }else{ ?>
@@ -195,8 +200,37 @@
             }
         });         
     }
+
+    function get_student_by_class() {
+        var classes = <?php echo json_encode($classes); ?>;
+
+        <?php if(isset($class_id) && isset($section_id)){ ?>
+            console.log(get_section_by_class('<?php echo $class_id; ?>', '<?php echo $section_id; ?>'));
+        <?php } ?>
+
+        // classes.forEach(function(obj) {
+        //     console.log(obj);
+        //     // count ++;
+        // });
+    }
+
+    get_student_by_class()
  
   $("#marksheet").validate(); 
+</script>
+
+<script type="text/javascript">
+    
+    function gradeAvg() {
+        var subjects = <?php echo json_encode($subjects); ?>;
+        var count = 0;
+
+        subjects.forEach(function(obj) {
+            count ++;
+        });
+        console.log(count);
+    }
+    gradeAvg();
 </script>
 
 

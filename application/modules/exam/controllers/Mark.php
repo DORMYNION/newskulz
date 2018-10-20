@@ -118,10 +118,20 @@ class Mark extends MY_Controller {
                 foreach ($_POST['students'] as $key => $value) {
 
                     $condition['student_id'] = $value;
-                    $data['exam_mark'] = $_POST['exam_mark'][$value];
+                    $data['st_half'] = $_POST['st_half'][$value];
+                    $data['nd_half'] = $_POST['nd_half'][$value];
+                    $data['ca'] = $_POST['ca'][$value];
                     $data['obtain_mark'] = $_POST['obtain_mark'][$value];
-                    $data['grade_id'] = $_POST['grade_id'][$value];
-                    $data['remark'] = $_POST['remark'][$value];
+                    $data['total_score'] = $_POST['total_score'][$value];
+
+                    foreach ($this->data['grades'] as $grade) {
+                        if ($grade->name === $_POST['grade_id'][$value]) {
+                            $data['grade_id'] = $grade->id;
+                        }
+                    }
+
+                    $data['grade_avg'] = $_POST['grade_avg'][$value];
+                    $data['effort_grade'] = $_POST['effort_grade'][$value];
                     $data['status'] = 1;
                     $data['created_at'] = date('Y-m-d H:i:s');
                     $data['created_by'] = logged_in_user_id();
@@ -135,5 +145,128 @@ class Mark extends MY_Controller {
         $this->layout->title($this->lang->line('add') . ' ' . $this->lang->line('mark') . ' | ' . SMS);
         $this->layout->view('mark/index', $this->data);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //     /*****************Function index**********************************
+    // * @type            : Function
+    // * @function name   : index
+    // * @description     : Load "Exam Mark List" user interface                 
+    // *                    with filter option  
+    // * @param           : null
+    // * @return          : null 
+    // * ********************************************************** */
+    // public function new() {
+
+    //     check_permission(VIEW);
+
+    //     if ($_POST) {
+
+    //         $exam_id = $this->input->post('exam_id');
+    //         $class_id = $this->input->post('class_id');
+    //         $section_id = $this->input->post('section_id');
+    //         $subject_id = $this->input->post('subject_id');
+
+    //         $this->data['students'] = $this->mark->get_student_list($exam_id, $class_id, $section_id, $subject_id);
+
+    //         $condition = array(
+    //             'exam_id' => $exam_id,
+    //             'class_id' => $class_id,
+    //             'section_id' => $section_id,
+    //             'academic_year_id' => $this->academic_year_id,
+    //             'subject_id' => $subject_id
+    //         );
+
+    //         $data = $condition;
+    //         if (!empty($this->data['students'])) {
+
+    //             foreach ($this->data['students'] as $obj) {
+
+    //                 $condition['student_id'] = $obj->student_id;
+    //                 $mark = $this->mark->get_single('marks', $condition);
+
+    //                 if (empty($mark)) {
+    //                     $data['student_id'] = $obj->student_id;
+    //                     $data['status'] = 1;
+    //                     $data['created_at'] = date('Y-m-d H:i:s');
+    //                     $data['created_by'] = logged_in_user_id();
+    //                     $this->mark->insert('marks', $data);
+    //                 }
+    //             }
+    //         }
+
+    //         $this->data['exam_id'] = $exam_id;
+    //         $this->data['class_id'] = $class_id;
+    //         $this->data['section_id'] = $section_id;
+    //         $this->data['subject_id'] = $subject_id;
+    //     }
+
+    //     $this->layout->title($this->lang->line('manage_mark') . ' | ' . SMS);
+    //     $this->layout->view('mark/new', $this->data);
+    // }
+
+    
+    // /*****************Function add**********************************
+    // * @type            : Function
+    // * @function name   : add
+    // * @description     : Process to store "Exam Mark" into database                
+    // *                     
+    // * @param           : null
+    // * @return          : null 
+    //  * ********************************************************** */
+    // public function addd() {
+
+    //     check_permission(ADD);
+
+    //     if ($_POST) {
+
+    //         $exam_id = $this->input->post('exam_id');
+    //         $class_id = $this->input->post('class_id');
+    //         $section_id = $this->input->post('section_id');
+    //         $subject_id = $this->input->post('subject_id');
+
+    //         $condition = array(
+    //             'exam_id' => $exam_id,
+    //             'class_id' => $class_id,
+    //             'section_id' => $section_id,
+    //             'academic_year_id' => $this->academic_year_id,
+    //             'subject_id' => $subject_id
+    //         );
+
+    //         $data = $condition;
+
+    //         if (!empty($_POST['students'])) {
+
+    //             foreach ($_POST['students'] as $key => $value) {
+
+    //                 $condition['student_id'] = $value;
+    //                 $data['exam_mark'] = $_POST['exam_mark'][$value];
+    //                 $data['obtain_mark'] = $_POST['obtain_mark'][$value];
+    //                 $data['grade_id'] = $_POST['grade_id'][$value];
+    //                 $data['remark'] = $_POST['remark'][$value];
+    //                 $data['status'] = 1;
+    //                 $data['created_at'] = date('Y-m-d H:i:s');
+    //                 $data['created_by'] = logged_in_user_id();
+    //                 $this->mark->update('marks', $data, $condition);
+    //             }
+    //         }
+    //         success($this->lang->line('insert_success'));
+    //         redirect('exam/mark');
+    //     }
+
+    //     $this->layout->title($this->lang->line('add') . ' ' . $this->lang->line('mark') . ' | ' . SMS);
+    //     $this->layout->view('mark/new', $this->data);
+    // }
 
 }

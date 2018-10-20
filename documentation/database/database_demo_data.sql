@@ -1664,13 +1664,14 @@ CREATE TABLE IF NOT EXISTS `grades` (
 --
 
 INSERT INTO `grades` (`id`, `name`, `point`, `mark_from`, `mark_to`, `note`, `status`, `created_at`, `modified_at`, `created_by`, `modified_by`) VALUES
-(1, 'A+', '5.00', 80, 100, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 1, '2018-02-11 05:48:09', '0000-00-00 00:00:00', 1, 0),
-(2, 'A', '4.00', 70, 79, 'Lorem Ipsum has been the industry''s standard dummy', 1, '2018-02-11 05:49:35', '0000-00-00 00:00:00', 1, 0),
-(3, 'A-', '3.50', 60, 69, 'Lorem Ipsum is not simply random text.', 1, '2018-02-11 05:50:38', '0000-00-00 00:00:00', 1, 0),
-(4, 'B', '3.00', 50, 59, 'Lorem Ipsum is simply dummy text of the printing and typesetting .', 1, '2018-02-11 05:51:30', '0000-00-00 00:00:00', 1, 0),
-(5, 'C', '2.50', 40, 49, 'Lorem Ipsum has been the industry''s standard dummy', 1, '2018-02-11 05:53:20', '0000-00-00 00:00:00', 1, 0),
-(6, 'D', '2.00', 33, 39, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 1, '2018-02-11 05:54:06', '0000-00-00 00:00:00', 1, 0),
-(7, 'F', '0.00', 0, 32, 'Lorem Ipsum is not simply random text.', 1, '2018-02-11 05:54:47', '0000-00-00 00:00:00', 1, 0);
+(1, 'A*', '5.00', 90, 100, '.', 1, '2018-02-11 05:48:09', '0000-00-00 00:00:00', 1, 0),
+(2, 'A', '4.50', 80, 89, '', 1, '2018-02-11 05:49:35', '0000-00-00 00:00:00', 1, 0),
+(3, 'B', '4.00', 70, 79, '', 1, '2018-02-11 05:50:38', '0000-00-00 00:00:00', 1, 0),
+(4, 'C', '3.00', 60, 69, '', 1, '2018-02-11 05:51:30', '0000-00-00 00:00:00', 1, 0),
+(5, 'D', '2.50', 50, 59, '', 1, '2018-02-11 05:53:20', '0000-00-00 00:00:00', 1, 0),
+(6, 'E', '2.00', 40, 49, '', 1, '2018-02-11 05:54:06', '0000-00-00 00:00:00', 1, 0),
+(7, 'F', '1.50', 30, 39, '', 1, '2018-02-11 05:54:47', '0000-00-00 00:00:00', 1, 0),
+(8, 'U', '0.00',  0, 29, '', 1, '2018-02-11 05:54:47', '0000-00-00 00:00:00', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -2053,9 +2054,14 @@ CREATE TABLE IF NOT EXISTS `marks` (
   `academic_year_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `grade_id` int(11) NOT NULL,
-  `exam_mark` int(11) NOT NULL,
-  `obtain_mark` int(11) NOT NULL,
-  `remark` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `st_half` int(11) NOT NULL,  
+  `nd_half` int(11) NOT NULL, 
+  `ca` int(11) NOT NULL, 
+  `obtain_mark` int(11) NOT NULL, 
+  `total_score` int(11) NOT NULL, 
+  `grade_avg` int(11) NOT NULL, 
+  `position` int(11) NOT NULL, 
+  `effort_grade` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `status` tinyint(1) NOT NULL,
   `created_at` datetime NOT NULL,
   `modified_at` datetime NOT NULL,
@@ -2067,7 +2073,7 @@ CREATE TABLE IF NOT EXISTS `marks` (
 -- Dumping data for table `marks`
 --
 
-INSERT INTO `marks` (`id`, `exam_id`, `class_id`, `section_id`, `subject_id`, `academic_year_id`, `student_id`, `grade_id`, `exam_mark`, `obtain_mark`, `remark`, `status`, `created_at`, `modified_at`, `created_by`, `modified_by`) VALUES
+INSERT INTO `marks` (`id`, `exam_id`, `class_id`, `section_id`, `subject_id`, `academic_year_id`, `student_id`, `grade_id`, `st_half`, `nd_half`, `ca`, `obtain_mark`, `total_score`, `grade_avg`, `position`, `effort_grade`, `status`, `created_at`, `modified_at`, `created_by`, `modified_by`) VALUES
 (1, 1, 1, 1, 1, 2, 1, 1, 100, 80, '', 1, '2018-04-15 04:23:23', '0000-00-00 00:00:00', 1, 0),
 (2, 1, 1, 1, 1, 2, 2, 1, 100, 90, '', 1, '2018-04-15 04:23:23', '0000-00-00 00:00:00', 1, 0),
 (3, 1, 1, 1, 1, 2, 3, 2, 100, 70, '', 1, '2018-04-15 04:23:23', '0000-00-00 00:00:00', 1, 0),

@@ -1,5 +1,3 @@
-
-
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
@@ -31,7 +29,7 @@
             
             
             <div class="x_content"> 
-                <?php echo form_open_multipart(site_url('exam/mark/index'), array('name' => 'mark', 'id' => 'mark', 'class' => 'form-horizontal form-label-left'), ''); ?>
+                <?php echo form_open_multipart(site_url('exam/mark/new'), array('name' => 'mark', 'id' => 'mark', 'class' => 'form-horizontal form-label-left'), ''); ?>
                 <div class="row">
                     
                     <div class="col-md-10 col-sm-10 col-xs-12">
@@ -100,21 +98,23 @@
                 </div>            
             </div>
              <?php } ?>
-
+            
             <div class="x_content">
                  <?php echo form_open(site_url('exam/mark/add'), array('name' => 'addmark', 'id' => 'addmark', 'class'=>'form-horizontal form-label-left'), ''); ?>
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th><?php echo $this->lang->line('sn'); ?></th>
-                            <th><?php echo $this->lang->line('name_of_students'); ?></th>
-                            <th><?php echo $this->lang->line('st_half'); ?></th>
-                            <th><?php echo $this->lang->line('nd_half'); ?></th>
-                            <th><?php echo $this->lang->line('ca'); ?></th>
-                            <th><?php echo $this->lang->line('exam_mark'); ?></th>                                            
-                            <th><?php echo $this->lang->line('total'); ?></th>                                            
+                            <th><?php echo $this->lang->line('sl_no'); ?></th>
+                            <th><?php echo $this->lang->line('name'); ?></th>
+                            <th><?php echo $this->lang->line('phone'); ?></th>
+                            <th><?php echo $this->lang->line('roll_no'); ?></th>
+                            <th><?php echo $this->lang->line('photo'); ?></th>
+                            <th><?php echo $this->lang->line('exam_mark'); ?>
+                                <input type="text" value=""  name="remark" class="" id="fn_total_mark" size="3" />
+                            </th>                                            
+                            <th><?php echo $this->lang->line('mark_obtain'); ?></th>                                            
                             <th><?php echo $this->lang->line('exam_grade'); ?></th>                                            
-                            <th><?php echo $this->lang->line('effort_grade'); ?></th>                                            
+                            <th><?php echo $this->lang->line('remark'); ?></th>                                            
                         </tr>
                     </thead>
                     <tbody id="fn_mark">   
@@ -128,34 +128,35 @@
                                 <tr>
                                     <td><?php echo $count++;  ?></td>
                                     <td><?php echo ucfirst($obj->student_name); ?></td>
+                                    <td><?php echo $obj->phone; ?></td>
+                                    <td><?php echo $obj->roll_no; ?></td>
                                     <td>
-                                        <input type="number" value="<?php if(!empty($mark) && $mark->st_half > 0 ){ echo $mark->st_half; }else{ echo ''; } ?>" name="st_half[<?php echo $obj->student_id; ?>]" class="form-control" id="st_half<?php echo $obj->student_id; ?>" onkeyup="calScore('<?php echo $obj->student_id; ?>')" />
-                                    </td>
-                                    <td>
-                                        <?php $sec = $mark->nd_half; ?>
-                                        <input type="number" value="<?php if(!empty($mark) && $mark->nd_half > 0 ){ echo $mark->nd_half; }else{ echo ''; } ?>" name="nd_half[<?php echo $obj->student_id; ?>]" class="form-control" id="nd_half<?php echo $obj->student_id; ?>" onkeyup="calScore('<?php echo $obj->student_id; ?>')" />
-                                    </td>
-                                    <td>
-                                        <input type="number" value="<?php if(!empty($mark) && $mark->ca > 0 ){ echo $mark->ca; }else{ echo ''; } ?>"  name="ca[<?php echo $obj->student_id; ?>]" value="0" placeholder="" class="form-control" id="ca<?php echo $obj->student_id; ?>" onkeyup="calScore('<?php echo $obj->student_id; ?>')" readonly="readonly" />
+                                        <?php if ($obj->photo != '') { ?>
+                                            <img src="<?php echo UPLOAD_PATH; ?>/student-photo/<?php echo $obj->photo; ?>" alt="" width="60" /> 
+                                        <?php } else { ?>
+                                            <img src="<?php echo IMG_URL; ?>/default-user.png" alt="" width="60" /> 
+                                        <?php } ?>
                                     </td>  
                                     <td>
+                                        <input type="hidden" value="<?php echo $obj->student_id; ?>"  name="students[]" />                                       
+                                        <input type="number" value="<?php if(!empty($mark) && $mark->exam_mark > 0){ echo $mark->exam_mark; }else{ echo '';} ?>"  name="exam_mark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12 fn_mark_total" required="required" />
+                                    </td>
+                                    <td>
                                         <?php if(!empty($attendance)){ ?>
-                                            <input type="number" value="<?php if(!empty($mark) && $mark->obtain_mark > 0 ){ echo $mark->obtain_mark; }else{ echo ''; } ?>"  name="obtain_mark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" required="required" id="obtain_mark<?php echo $obj->student_id; ?>" onkeyup="calScore('<?php echo $obj->student_id; ?>')" />
+                                            <input type="number" value="<?php if(!empty($mark) && $mark->obtain_mark > 0 ){ echo $mark->obtain_mark; }else{ echo ''; } ?>"  name="obtain_mark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" required="required" />
                                         <?php }else{ ?>
-                                            <input type="number" value="0"  name="obtain_mark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" required="required" id="obtain_mark<?php echo $obj->student_id; ?>" onkeyup="calScore('<?php echo $obj->student_id; ?>')" readonly="readonly" />
+                                            <input readonly="readonly" type="number" value="0"  name="obtain_mark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" required="required" />
                                         <?php } ?>
                                     </td>
                                     <td>
-                                        <input type="hidden" value="<?php echo $obj->student_id; ?>"  name="students[]" />                                       
-                                        <input type="number" value="<?php if(!empty($mark) && $mark->total_score > 0 ){ echo $mark->total_score; }else{ echo ''; } ?>"  name="total_score[<?php echo $obj->student_id; ?>]" value="" class="form-control col-md-7 col-xs-12 fn_mark_total" required="required" id="total_score<?php echo $obj->student_id; ?>" readonly="readonly" />
-                                        
-                                        <input type="hidden" value="" name="grade_avg" id="grade_avg" />                        
-
+                                        <select  class="form-control col-md-7 col-xs-12" name="grade_id[<?php echo $obj->student_id; ?>]"  required="required">                                
+                                            <option value="">--<?php echo $this->lang->line('select'); ?>--</option>
+                                             <?php foreach ($grades as $grade) { ?>
+                                            <option value="<?php echo $grade->id; ?>" <?php if(isset($mark) && $mark->grade_id == $grade->id){ echo 'selected="selected"';} ?>><?php echo $grade->name; ?> [<?php echo $grade->point; ?>]</option>
+                                            <?php } ?>
+                                        </select>
                                     </td>
-                                    <td>
-                                        <input type="text" value="<?php if(!empty($mark) && $mark->grade_id > 0 ){foreach ($grades as $grade) {if ($mark->grade_id === $grade->id) {echo $grade->name;}}}else{ echo ''; } ?>"  name="grade_id[<?php echo $obj->student_id; ?>]" class="form-control" onkeyup="calScore('<?php echo $obj->student_id; ?>')" id="grade<?php echo $obj->student_id; ?>" readonly="readonly" /> 
-                                    </td>
-                                    <td><input type="text" value="<?php if($mark){ echo $mark->effort_grade; } ?>"  name="effort_grade[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" /></td>
+                                    <td><input type="text" value="<?php if($mark){ echo $mark->remark; } ?>"  name="remark[<?php echo $obj->student_id; ?>]" class="form-control col-md-7 col-xs-12" /></td>
                                 </tr>
                             <?php } ?>
                         <?php }else{ ?>
@@ -183,13 +184,12 @@
                     <div class="instructions"><strong><?php echo $this->lang->line('instruction'); ?>: </strong> <?php echo $this->lang->line('exam_mark_instruction'); ?></div>
                 </div>
             </div> 
-
             
         </div>
     </div>
 </div>
  
-<script type="text/javascript">     
+ <script type="text/javascript">     
   
     <?php if(isset($class_id) && isset($section_id)){ ?>
         get_section_subject_by_class('<?php echo $class_id; ?>', '<?php echo $section_id; ?>', '<?php echo $subject_id; ?>');
@@ -238,105 +238,5 @@
  $("#addmark").validate();  
 </script>
 
-<script type="text/javascript">
-    function calScore(id) {
-        var gd = <?php echo json_encode($grades); ?>;
-        
-        var F = Number($('#st_half'+id).val()),
-            S = Number($('#nd_half'+id).val()),
-            E = Number($('#obtain_mark'+id).val()),
-            C = 0,
-            T = 0,
-            idd = ''; 
-
-        if ((F > 15)) {
-            idd = '#st_half'+id;
-            validateMark(id, idd);
-        } else {
-            idd = '#st_half'+id;
-            cal(F, S, E, id, gd, idd);
-        }
-
-        if ((S > 15)) {
-            idd = '#nd_half'+id;
-            validateMark(id, idd);
-        } else {
-            idd = '#nd_half'+id;
-            cal(F, S, E, id, gd, idd);
-        }
-
-        if ((E > 70)) {
-            idd = '#obtain_mark'+id;
-            validateMark(id, idd);
-        } else {
-            idd = '#obtain_mark'+id;
-            cal(F, S, E, id, gd, idd);
-        }
-        gradeAvg();
-
-    }  
-
-    function validateMark(id, idd)  {
-        $(idd).css({
-            "background-color": 'red',
-            "border": '2px solid',
-            "color": 'blue'
-        });
-        
-        $('#ca'+id).val(0);
-        $('#total_score'+id).val(0);
-        $('#grade'+id).val("error");
-
-        // Prevent form submission
-        // if ($('#grade'+id).val() == "error") {
-        //     $( "form" ).submit(function( event ) {
-        //       event.preventDefault();
-        //       console.log("ERROR");
-        //       console.log($('#grade'+id).val());
-        //     });
-        // } 
-    }   
-
-    function cal(F, S, E, id, gd, idd) {
-        C = F + S;
-        T = C + E; 
-                  
-        $('#ca'+id).val(C);
-        $('#total_score'+id).val(T);
-
-        gd.forEach(function(element) {
-            if (T >= element['mark_from'] && T <= element['mark_to']) {
-                $('#grade'+id).val(element['name']);
-            } 
-        });
-        $(idd).css({
-            "background-color": '',
-            "border": '',
-            "color": ''
-        });
-
-        // var mak = <?php //echo json_encode($mark); ?>;
-        // console.log(mak);
-    }
-
-    function gradeAvg() {
-        var students = <?php echo json_encode($students); ?>;
-        var count = 1,
-            avg = 0,
-            total = 0;
-
-        students.forEach(function(obj) {
-            var T = Number($('#total_score'+count).val());
-            total += T;
-            avg = total/count;
-            count ++;
-        });
-        $('#grade_avg').val(avg)
-        console.log(count);
-        console.log(total);
-        console.log(avg);
-    console.log($('#grade_avg').val());
-    }
 
 
-</script>
